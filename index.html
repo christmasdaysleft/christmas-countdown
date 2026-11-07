@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Christmas Countdown – Days, Hours &amp; Sleeps Until Christmas</title>
+<meta name="description" content="Live Christmas countdown: see exactly how many days, hours, minutes and sleeps are left until Christmas, plus weekends left, an Advent calendar and countdowns to Christmas Eve, Boxing Day and New Year.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Christmas Countdown – Days, Hours &amp; Sleeps Until Christmas">
+<meta property="og:description" content="A live, festive countdown to Christmas with sleeps, weekends left and a daily Advent calendar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebApplication",
+      "name":"Christmas Countdown",
+      "applicationCategory":"LifestyleApplication",
+      "operatingSystem":"Browser",
+      "inLanguage":"en",
+      "description":"Live countdown to Christmas with days, hours, minutes, seconds, sleeps, weekends left and an interactive Advent calendar.",
+      "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+    },
+    {
+      "@type":"FAQPage",
+      "mainEntity":[
+        {"@type":"Question","name":"What day of the week is Christmas 2026?","acceptedAnswer":{"@type":"Answer","text":"Christmas Day 2026, December 25, falls on a Friday. Christmas Eve 2026 is on a Thursday."}},
+        {"@type":"Question","name":"How many sleeps until Christmas?","acceptedAnswer":{"@type":"Answer","text":"Sleeps are the number of nights left before Christmas morning. The countdown on this page shows the current number of sleeps, based on your device’s date."}},
+        {"@type":"Question","name":"When does the Christmas countdown reset?","acceptedAnswer":{"@type":"Answer","text":"The countdown shows a Christmas Day message on December 25 and starts counting down to the next Christmas from December 26."}},
+        {"@type":"Question","name":"Is the countdown based on my time zone?","acceptedAnswer":{"@type":"Answer","text":"Yes. It counts down to midnight on December 25 in the time zone of the device you are using, so it is correct wherever you are."}},
+        {"@type":"Question","name":"When should I start my Advent calendar?","acceptedAnswer":{"@type":"Answer","text":"Most Advent calendars start on December 1 and have 24 doors, one for each day until Christmas Eve."}},
+        {"@type":"Question","name":"Why is Christmas celebrated on December 25?","acceptedAnswer":{"@type":"Answer","text":"December 25 has been used by Western churches to mark the birth of Jesus since at least the 4th century. Many Orthodox churches that follow the Julian calendar celebrate on January 7."}}
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<canvas id="snow" aria-hidden="true"></canvas>
+
+<header class="hd">
+  <div class="wrap hd-in">
+    <a href="#" class="logo" aria-label="Christmas Countdown home">
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><path d="M16 3l3 6h-2l4 6h-2.5l4.5 7H9l4.5-7H11l4-6h-2z" fill="#3fa36b"/><rect x="14" y="22" width="4" height="5" rx="1" fill="#8b5a2b"/><circle cx="16" cy="3.5" r="2" fill="#f4c95d"/></svg>
+      <span>Xmas<b>Countdown</b></span>
+    </a>
+    <button class="burger" aria-label="Menu" onclick="document.querySelector('.nav').classList.toggle('open')"><span></span><span></span></button>
+    <nav class="nav">
+      <a href="#" class="cur">Countdown</a>
+      <a href="#advent">Advent Calendar</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-in">
+    <p class="eyebrow" id="xday">Christmas Day falls on a Friday</p>
+    <h1 id="h-title">Countdown to Christmas <span id="h-year">2026</span></h1>
+
+    <div class="clock" id="clock" aria-live="polite">
+      <div class="unit"><b id="c-d">50</b><span>Days</span></div>
+      <i class="sep">:</i>
+      <div class="unit"><b id="c-h">00</b><span>Hours</span></div>
+      <i class="sep">:</i>
+      <div class="unit"><b id="c-m">00</b><span>Minutes</span></div>
+      <i class="sep">:</i>
+      <div class="unit"><b id="c-s">00</b><span>Seconds</span></div>
+    </div>
+    <div class="merry" id="merry" hidden>🎄 Merry Christmas! 🎁</div>
+
+    <div class="progress">
+      <div class="p-top"><span>Christmas spirit loading…</span><b id="p-pct">86%</b></div>
+      <div class="p-bar"><i id="p-bar"></i><em id="p-sled">🛷</em></div>
+    </div>
+
+    <p class="hero-p">Every second counts when the holidays are this close. For a quick answer you can bookmark and check each morning, see <a href="https://christmasdaysleft.com/">How many days until Christmas?</a> – then come back here for the Advent calendar and festive extras.</p>
+
+    <div class="chips">
+      <div><b id="k-sleeps">50</b><span>sleeps</span></div>
+      <div><b id="k-weeks">7.1</b><span>weeks</span></div>
+      <div><b id="k-weekends">7</b><span>weekends</span></div>
+      <div><b id="k-hours">1,200</b><span>hours</span></div>
+    </div>
+    <button type="button" class="snow-btn" id="snow-btn" aria-pressed="true">❄ Snow on</button>
+  </div>
+</section>
+
+<main>
+  <!-- ===== OTHER COUNTDOWNS ===== -->
+  <section class="wrap sec first">
+    <div class="sec-head"><p class="kick">The whole season</p><h2>Holiday countdowns at a glance</h2></div>
+    <div class="events" id="events"></div>
+  </section>
+
+  <!-- ===== DATE CALC ===== -->
+  <section class="wrap sec">
+    <div class="calc">
+      <div class="calc-text">
+        <p class="kick">Plan ahead</p>
+        <h2>Days until Christmas from any date</h2>
+        <p>Planning a party, a trip home or a gift deadline? Pick a date to see how many days are left until Christmas from that day – and what day of the week Christmas falls on that year.</p>
+      </div>
+      <div class="calc-box">
+        <label for="d-in">Choose a date</label>
+        <input type="date" id="d-in">
+        <div class="calc-out" aria-live="polite">
+          <b id="d-out">50</b>
+          <span id="d-txt">days until Christmas</span>
+          <p id="d-sub">Christmas 2026 is on a Friday.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ADVENT ===== -->
+  <section class="advent-wrap" id="advent">
+    <div class="wrap">
+      <div class="sec-head light"><p class="kick">December 1–24</p><h2>Open today’s Advent door</h2>
+      <p>Each door opens on its date in December and hides a small Christmas fact. Doors from earlier days stay open, future doors stay locked – no peeking!</p></div>
+      <div class="advent" id="advent-grid"></div>
+      <div class="door-msg" id="door-msg" aria-live="polite">Tap a door to open it.</div>
+    </div>
+  </section>
+
+  <!-- ===== WEEKDAYS ===== -->
+  <section class="wrap sec split">
+    <div>
+      <p class="kick">Calendar</p>
+      <h2>What day is Christmas?</h2>
+      <p>Christmas Day is always on December 25, but the weekday moves forward by one day each year – and by two after a leap year. That is why Christmas 2027 lands on a Saturday and Christmas 2028 jumps to a Monday.</p>
+      <p>When Christmas falls on a weekend, many employers in the UK, Canada and elsewhere give a substitute day off on the following weekday.</p>
+    </div>
+    <div class="years">
+      <div class="yr now"><span>2026</span><b>Friday</b></div>
+      <div class="yr"><span>2027</span><b>Saturday</b></div>
+      <div class="yr"><span>2028</span><b>Monday</b></div>
+      <div class="yr"><span>2029</span><b>Tuesday</b></div>
+      <div class="yr"><span>2030</span><b>Wednesday</b></div>
+      <div class="yr"><span>2031</span><b>Thursday</b></div>
+    </div>
+  </section>
+
+  <!-- ===== MILESTONES ===== -->
+  <section class="wrap sec">
+    <div class="sec-head"><p class="kick">Countdown milestones</p><h2>Little dates that make the wait fun</h2></div>
+    <div class="miles">
+      <article><b>100</b><span>days to go</span><p>Mid-September – the perfect day to start a gift list and a savings jar.</p></article>
+      <article><b>50</b><span>days to go</span><p>Early November – order personalised gifts and book holiday travel.</p></article>
+      <article><b>24</b><span>days to go</span><p>December 1 – Advent begins and the first calendar door opens.</p></article>
+      <article><b>10</b><span>days to go</span><p>Mid-December – post cards and parcels if they have far to travel.</p></article>
+      <article><b>1</b><span>sleep to go</span><p>Christmas Eve – stockings up, cookies out for Santa.</p></article>
+    </div>
+  </section>
+
+  <!-- ===== TRADITIONS ===== -->
+  <section class="wrap sec">
+    <div class="sec-head"><p class="kick">Around the world</p><h2>How the world counts down to Christmas</h2></div>
+    <div class="trad">
+      <article><span>🇩🇪</span><h3>Germany</h3><p>Advent wreaths with four candles – one lit each Sunday – and Christmas markets with mulled wine and gingerbread.</p></article>
+      <article><span>🇲🇽</span><h3>Mexico</h3><p>Las Posadas processions re-enact the search for shelter every evening from December 16 to 24.</p></article>
+      <article><span>🇸🇪</span><h3>Sweden</h3><p>On December 13, St. Lucia’s Day brings candlelit processions and saffron buns.</p></article>
+      <article><span>🇮🇸</span><h3>Iceland</h3><p>Thirteen mischievous Yule Lads visit children one by one in the nights before Christmas.</p></article>
+      <article><span>🇯🇵</span><h3>Japan</h3><p>Christmas is a festive, romantic occasion – and fried chicken has become a popular Christmas meal.</p></article>
+      <article><span>🇵🇭</span><h3>Philippines</h3><p>Famous for one of the longest Christmas seasons, with carols starting as early as September.</p></article>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="wrap sec">
+    <div class="sec-head"><p class="kick">FAQ</p><h2>Christmas countdown questions</h2></div>
+    <div class="faq">
+      <details open><summary>What day of the week is Christmas 2026?</summary><p>Christmas Day 2026, December 25, falls on a Friday. Christmas Eve 2026 is on a Thursday.</p></details>
+      <details><summary>How many sleeps until Christmas?</summary><p>Sleeps are the number of nights left before Christmas morning. The countdown on this page shows the current number of sleeps, based on your device’s date.</p></details>
+      <details><summary>When does the Christmas countdown reset?</summary><p>The countdown shows a Christmas Day message on December 25 and starts counting down to the next Christmas from December 26.</p></details>
+      <details><summary>Is the countdown based on my time zone?</summary><p>Yes. It counts down to midnight on December 25 in the time zone of the device you are using, so it is correct wherever you are.</p></details>
+      <details><summary>When should I start my Advent calendar?</summary><p>Most Advent calendars start on December 1 and have 24 doors, one for each day until Christmas Eve.</p></details>
+      <details><summary>Why is Christmas celebrated on December 25?</summary><p>December 25 has been used by Western churches to mark the birth of Jesus since at least the 4th century. Many Orthodox churches that follow the Julian calendar celebrate on January 7.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="ft" id="contact">
+  <div class="wrap ft-in">
+    <div>
+      <span class="logo"><span>Xmas<b>Countdown</b></span></span>
+      <p>A live Christmas countdown with sleeps, weekends and a daily Advent calendar.</p>
+    </div>
+    <nav>
+      <a href="#">Countdown</a>
+      <a href="#advent">Advent Calendar</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy</a>
+    </nav>
+  </div>
+  <p class="wrap ft-copy">© <span id="yr"></span> XmasCountdown · Made with festive cheer.</p>
+</footer>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  var DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  function pad(n){return String(n).padStart(2,'0');}
+  function fmt(n){return n.toLocaleString('en-US');}
+  function dOnly(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate());}
+  function dayDiff(a,b){return Math.round((dOnly(b)-dOnly(a))/864e5);}
+  function xmasYear(now){ return (now.getMonth()===11 && now.getDate()>25)?now.getFullYear()+1:now.getFullYear(); }
+
+  /* ---------- Main countdown ---------- */
+  function tick(){
+    var now=new Date(), y=xmasYear(now), target=new Date(y,11,25);
+    var isXmas=now.getMonth()===11 && now.getDate()===25;
+    $('h-year').textContent=y;
+    $('xday').textContent='Christmas Day '+y+' falls on a '+DAYS[target.getDay()];
+    $('merry').hidden=!isXmas; $('clock').hidden=isXmas;
+    $('h-title').firstChild.textContent=isXmas?'Today is Christmas ':'Countdown to Christmas ';
+    var ms=Math.max(0,target-now);
+    var d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4), s=Math.floor(ms%6e4/1e3);
+    $('c-d').textContent=d; $('c-h').textContent=pad(h); $('c-m').textContent=pad(m); $('c-s').textContent=pad(s);
+    var sleeps=isXmas?0:dayDiff(now,target);
+    $('k-sleeps').textContent=sleeps;
+    $('k-weeks').textContent=(sleeps/7).toFixed(1);
+    var we=0, cur=dOnly(now);
+    while(cur<target){ if(cur.getDay()===6) we++; cur.setDate(cur.getDate()+1); }
+    $('k-weekends').textContent=we;
+    $('k-hours').textContent=fmt(Math.floor(ms/36e5));
+    var start=new Date(y-1,11,26), pct=Math.min(100,Math.max(0,(now-start)/(target-start)*100));
+    if(isXmas) pct=100;
+    $('p-pct').textContent=pct.toFixed(1)+'%';
+    $('p-bar').style.width=pct+'%'; $('p-sled').style.left='calc('+pct+'% - 14px)';
+  }
+
+  /* ---------- Other events ---------- */
+  function events(){
+    var now=new Date(), y=xmasYear(now);
+    var list=[
+      ['🎅','Christmas Eve',new Date(y,11,24)],
+      ['🎄','Christmas Day',new Date(y,11,25)],
+      ['🎁','Boxing Day',new Date(y,11,26)],
+      ['🎆','New Year’s Eve',new Date(y,11,31)],
+      ['🥂','New Year’s Day',new Date(y+1,0,1)],
+      ['🕯️','Advent begins',new Date(y,11,1)]
+    ].map(function(e){ var t=e[2]; if(dOnly(now)>t){ t=new Date(t); t.setFullYear(t.getFullYear()+1); } return [e[0],e[1],t,dayDiff(now,t)]; })
+     .sort(function(a,b){return a[3]-b[3];});
+    $('events').innerHTML=list.map(function(e){
+      return '<article class="'+(e[3]===0?'today':'')+'"><span class="ev-ic">'+e[0]+'</span><h3>'+e[1]+'</h3><p>'+e[2].toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})+'</p><b>'+(e[3]===0?'Today!':e[3]+(e[3]===1?' day':' days'))+'</b></article>';
+    }).join('');
+  }
+
+  /* ---------- Date calculator ---------- */
+  function calc(){
+    var v=$('d-in').value; if(!v) return;
+    var p=v.split('-'), from=new Date(+p[0],+p[1]-1,+p[2]);
+    var y=xmasYear(from), t=new Date(y,11,25), n=dayDiff(from,t);
+    $('d-out').textContent=n;
+    $('d-txt').textContent=n===0?'– that date is Christmas Day!':(n===1?'day until Christmas':'days until Christmas');
+    $('d-sub').textContent='Christmas '+y+' is on a '+DAYS[t.getDay()]+'.';
+  }
+  (function(){ var n=new Date(); $('d-in').value=n.getFullYear()+'-'+pad(n.getMonth()+1)+'-'+pad(n.getDate()); })();
+  $('d-in').addEventListener('input',calc);
+
+  /* ---------- Advent calendar ---------- */
+  var FACTS=['Advent calendars began in 19th-century Germany, where families marked the days with chalk lines or candles.',
+    'The first commercial Christmas card was sent in England in 1843.',
+    'Decorated Christmas trees became popular in Germany long before they spread around the world.',
+    '“Silent Night” was first performed on Christmas Eve 1818 in Oberndorf, Austria.',
+    'The first electric Christmas tree lights were shown off in New York in 1882.',
+    'December 6 is St. Nicholas Day – children in many countries find treats in their shoes.',
+    'A popular legend says candy canes were bent into a shepherd’s crook shape.',
+    'Rudolph the Red-Nosed Reindeer first appeared in a 1939 store booklet.',
+    'In Iceland, 13 Yule Lads visit children on the 13 nights before Christmas.',
+    'In Japan, fried chicken has become a hugely popular Christmas meal.',
+    'Norway has sent a Christmas tree to London’s Trafalgar Square every year since 1947.',
+    'In Mexico, Las Posadas processions take place each night from December 16 to 24.',
+    'St. Lucia’s Day on December 13 brings candlelit processions in Sweden.',
+    'Mince pies were originally filled with real minced meat and spices.',
+    'Poinsettias are native to Mexico, where they are called “flor de Nochebuena”.',
+    'Christmas crackers were invented by London sweet maker Tom Smith in the 1840s.',
+    'Santa’s sleigh is famously pulled by nine reindeer – eight plus Rudolph.',
+    'Bing Crosby’s “White Christmas” is one of the best-selling singles of all time.',
+    'A typical Christmas tree grows for around 7 to 10 years before it is sold.',
+    'In Ukraine, spider-web ornaments are a traditional Christmas decoration.',
+    'The winter solstice – the shortest day in the north – falls on December 21 or 22.',
+    'Gingerbread houses became popular in Germany in the 1800s.',
+    'An old Norwegian tradition says to hide your brooms on Christmas Eve.',
+    'Christmas Eve is the main day of celebration in many countries, including Germany and Poland.'];
+  var ICONS=['⭐','🎄','🔔','🎵','💡','👞','🍬','🦌','🧌','🍗','🌲','🕯️','👑','🥧','🌺','🎉','🛷','❄️','🌳','🕸️','🌙','🏠','🧹','🎁'];
+  var ORDER=[7,15,2,21,11,4,18,9,23,1,13,6,20,16,3,10,24,8,14,19,5,22,12,17];
+  function advent(){
+    var now=new Date(), inDec=now.getMonth()===11, today=inDec?now.getDate():0, y=now.getFullYear();
+    var opened=[]; try{ opened=JSON.parse(localStorage.getItem('xc-adv-'+y))||[]; }catch(e){}
+    $('advent-grid').innerHTML=ORDER.map(function(n){
+      var st=n<today?'past':(n===today?'today':'future');
+      var open=st==='past'||(st==='today'&&opened.indexOf(n)>-1);
+      return '<button type="button" class="door '+st+(open?' open':'')+'" data-n="'+n+'" aria-label="December '+n+'"><span class="d-front">'+n+'</span><span class="d-back">'+ICONS[n-1]+'</span></button>';
+    }).join('');
+    if(!inDec){ var dd=dayDiff(now,new Date(now.getMonth()===11?y:y,11,1)); $('door-msg').textContent=dd>0?'Advent starts on December 1 – the first door opens in '+dd+(dd===1?' day.':' days.'):'Advent is over – see you next December!'; }
+  }
+  $('advent-grid').addEventListener('click',function(e){
+    var b=e.target.closest('.door'); if(!b) return;
+    var n=+b.dataset.n, now=new Date(), today=now.getMonth()===11?now.getDate():0;
+    if(n>today){
+      var t=new Date(now.getFullYear(),11,n), w=dayDiff(now,t);
+      $('door-msg').innerHTML='🔒 Door '+n+' is still locked – it opens in <b>'+w+(w===1?' day':' days')+'</b>.';
+      b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); return;
+    }
+    b.classList.add('open');
+    if(n===today){ try{ var k='xc-adv-'+now.getFullYear(), o=JSON.parse(localStorage.getItem(k))||[]; if(o.indexOf(n)<0){o.push(n); localStorage.setItem(k,JSON.stringify(o));} }catch(e){} }
+    $('door-msg').innerHTML='<b>December '+n+' '+ICONS[n-1]+'</b> '+FACTS[n-1];
+  });
+
+  /* ---------- Snow ---------- */
+  var cv=$('snow'), cx=cv.getContext('2d'), flakes=[], on=true, raf;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function size(){ cv.width=innerWidth; cv.height=innerHeight; }
+  function mk(){ flakes=[]; var n=Math.min(110,Math.round(innerWidth/12)); for(var i=0;i<n;i++) flakes.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*2.4+.8,s:Math.random()*.7+.3,w:Math.random()*Math.PI*2}); }
+  function draw(){
+    cx.clearRect(0,0,cv.width,cv.height); cx.fillStyle='rgba(255,255,255,.85)';
+    flakes.forEach(function(f){ f.y+=f.s; f.w+=.01; f.x+=Math.sin(f.w)*.4; if(f.y>cv.height+5){f.y=-5;f.x=Math.random()*cv.width;} cx.beginPath(); cx.arc(f.x,f.y,f.r,0,6.283); cx.fill(); });
+    raf=requestAnimationFrame(draw);
+  }
+  function setSnow(v){ on=v; $('snow-btn').textContent=v?'❄ Snow on':'❄ Snow off'; $('snow-btn').setAttribute('aria-pressed',v); cancelAnimationFrame(raf); cx.clearRect(0,0,cv.width,cv.height); if(v) draw(); try{localStorage.setItem('xc-snow',v?'1':'0');}catch(e){} }
+  size(); mk(); addEventListener('resize',function(){size();mk();});
+  var pref=null; try{pref=localStorage.getItem('xc-snow');}catch(e){}
+  setSnow(pref?pref==='1':!reduce);
+  $('snow-btn').addEventListener('click',function(){setSnow(!on);});
+
+  document.querySelectorAll('.nav a').forEach(function(a){a.addEventListener('click',function(){document.querySelector('.nav').classList.remove('open');});});
+  $('yr').textContent=new Date().getFullYear();
+  tick(); setInterval(tick,1000); events(); calc(); advent();
+})();
+</script>
+</body>
+</html>
